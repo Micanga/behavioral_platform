@@ -2,6 +2,8 @@
 import tkinter
 from tkinter import *
 
+import os
+
 # Main
 if __name__ == "__main__":
 	# 1. Starting root
@@ -25,7 +27,7 @@ if __name__ == "__main__":
 	root.bind("<Escape>", lambda e: root.quit())
 	root.attributes('-fullscreen', True)
 
-	# b. grid settings
+	# c. grid settings
 	root.grid_rowconfigure(0,pad=0)
 	root.grid_columnconfigure(0,pad=0)
 	root.grid_rowconfigure(1,pad=0)
@@ -33,7 +35,41 @@ if __name__ == "__main__":
 	root.grid_columnconfigure(1,pad=0)
 	main_bg = None
 
-	# 3. Starting app
+	# 3. Verifying the not default directories integrity
+	if not os.path.isdir('./results'):
+		os.mkdir('./results')
+
+	if not os.path.isdir('./local/imgseq'):
+		os.mkdir('./local/imgseq')
+
+	if not os.path.isdir('./local/joker'):
+		os.mkdir('./local/joker')
+
+	if not os.path.isdir('./local/right'):
+		os.mkdir('./local/right')
+
+	if not os.path.isdir('./local/left'):
+		os.mkdir('./local/left')
+
+	if not os.path.isdir('./local/settings'):
+		os.mkdir('./local/settings')
+
+	if not os.path.isdir('./local/texts'):
+		os.mkdir('./local/texts')
+
+	if not os.path.isdir('./local/texts/stage1'):
+		os.mkdir('./local/texts/stage1')
+
+	if not os.path.isdir('./local/texts/stage2'):
+		os.mkdir('./local/texts/stage2')
+
+	if not os.path.isdir('./local/texts/stage3'):
+		os.mkdir('./local/texts/stage3')
+
+	if not os.path.isdir('./local/texts/stage4'):
+		os.mkdir('./local/texts/stage4')
+
+	# 4. Starting app
 	# a. resizing the background image
 	from PIL import Image, ImageTk
 	image = Image.open('bg/main.png')
@@ -52,4 +88,4 @@ if __name__ == "__main__":
 	Menu(root,None,background)
 	root.mainloop()
 
-	# 4. That's all folks :) ... 
+	# 5. That's all folks :) ... 
