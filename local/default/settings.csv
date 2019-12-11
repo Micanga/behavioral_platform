@@ -1,0 +1,12 @@
+max_time,90
+iri,0.5
+stability,0.2
+threshold,0.2
+preinf,1.0
+iti,1
+blocks1,10
+blocks2,10
+blocks3,10
+points,10
+u_threshold,0.5
+min_memo,80
