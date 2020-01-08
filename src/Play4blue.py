@@ -11,9 +11,11 @@ from copy import deepcopy
 import datetime
 import numpy as np
 import os
-from pygame import mixer
 import random
 import time
+
+from pygame import mixer
+import winsound
 
 from MyCommons import *
 import utils
@@ -53,8 +55,8 @@ class Play4blue:
 		self.points_label.place(x=self.sw/2,y=self.sh/2,anchor='center')
 
 		# c. loading sound and reset mouse position
-		mixer.init()
-		mixer.music.load('local/default/sfx.wav')
+		#mixer.init()
+		#mixer.music.load('local/default/sfx.wav')
 		self.reset_mouse_position()
 
 		self.ableButtonsAndMouse()
@@ -116,10 +118,7 @@ class Play4blue:
 
 	def check_game_status(self):
 		self.disableButtonsAndMouse()
-		if datetime.datetime.now() - self.start_time >\
-			datetime.timedelta(minutes=float(self.settings['max_time'])):
-			self.timeOut()
-		elif len(self.clicks) == 4:	
+		if len(self.clicks) == 4:	
 			print('| Clicks:',self.clicks)
 			self.repeat += 1
 
@@ -129,7 +128,10 @@ class Play4blue:
 			reinforcement_flag = self.reinforcement[-1] if self.reinforcement else False
 			if utils.Threshold(self.clicks,self.frequency,self.combinations,\
 			reinforcement_flag) <= float(self.settings['threshold']):
-				mixer.music.play() 
+
+				#mixer.music.play() 
+				winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
+
 				self.points.set(int(self.points.get())+int(self.settings['points']))
 				self.reinforcement.append(True)
 				self.master.after(20,self.fadeColor)
@@ -208,12 +210,7 @@ class Play4blue:
 		print(self.finish_txt)
 		from Play4 import Play4
 		Play4(self.master,self,self.main_bg)
-
-	def timeOut(self):
-		print(self.timeout_txt)
-		self.disableButtons()
-		myReturnMenuPopUp(self,'Fim do Experimento!\nPor favor, contacte o pesquisador e informe o fim da tarefa.\n Obrigado pela sua participação!')
-
+		
 	def fail(self):
 		myFailPopUp(self,'Fim do Experimento!\nPor favor, contacte o pesquisador e informe o fim da tarefa.\n Obrigado pela sua participação!')
 

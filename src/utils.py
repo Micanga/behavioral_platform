@@ -42,7 +42,7 @@ def write_rheader(nickname,start_time):
 		'Pontuação Acumulada;'+\
 		'# Bloco;'+\
 		'Tempo do Bloco;'+\
-		'Estabilidade;'+\
+		'Estabilidade na Taxa de Respostas (%);'+\
 	 	'Indice U;'+\
 	 	'Tentativas Reforçadas (%);'+\
 	 	'Acertos de Memoria'+\
@@ -57,6 +57,7 @@ def write_result(index,game,fill=True,memory=False):
 	if memory:
 		threshold = ''
 		u_value = ''
+		game.clicks = game.clicks[0:-1]
 	else:
 		threshold = str(Threshold(game.clicks,game.frequency,game.combinations,True))
 
@@ -93,7 +94,7 @@ def write_result(index,game,fill=True,memory=False):
 		result_file.write(\
 		str(len(game.blocks))+';'+\
 		str(game.blocks[-1][1])+';'+\
-		str(Stability(game.blocks))+';'+\
+		str(Stability(game.blocks,float(game.settings['stability'])))+';'+\
 		u_value+';'+\
 		str(sum(game.reinforcement)/len(game.reinforcement))+';')
 
@@ -420,21 +421,30 @@ def FRP(seq,freq,reinforced):
 def RF(seq,freq):
 	return freq[seq]/sum([freq[x] for x in freq])
 
-def Stability(vector):
+def Stability(vector,threshold):
 	if len(vector) < 3:
 		return 1
 
-	time = [vector[i][1] for i in [-2,-1,0]]
+	time = [vector[i][1] for i in [-3,-2,-1]]
+	check = [(fabs(time[i] - time[i-1])/time[i]) <= threshold for i in [0,1,2]]
 
-	return sum([fabs(time[i] - time[i-1])/time[i] for i in range(1,3)])/2
+	if check[0] and check[1] and check[2]:
+		return True
+	else:
+		return False
 
-def ReinfStability(vector,block_len,std_stability):
+def ReinfStability(vector,block_len,threshold):
 	if len(vector) < 3*int(block_len):
-		return float(std_stability)
+		return float(threshold)
 
 	reinf = []
 	for i in range(0,3):
 		reinf.append(sum([vector[j] \
 			for j in range(-(3-i)*int(block_len),-(2-i)*int(block_len))]))
 
-	return sum([fabs(reinf[i] - reinf[i-1])/reinf[i] for i in range(1,3)])/2
+	check = [(fabs(reinf[i] - reinf[i-1])/reinf[i]) <= threshold for i in range(1,3)]
+
+	if check[0] and check[1] and check[2]:
+		return True
+	else:
+		return False

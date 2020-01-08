@@ -11,9 +11,11 @@ from copy import deepcopy
 import datetime
 import numpy as np
 import os
-from pygame import mixer
 import random
 import time
+
+from pygame import mixer
+import winsound
 
 from MyCommons import *
 import utils
@@ -51,8 +53,8 @@ class Play3:
 		self.points_label.place(x=self.sw/2,y=self.sh/2,anchor='center')
 
 		# c. loading sound and reset mouse position
-		mixer.init()
-		mixer.music.load('local/default/sfx.wav')
+		#mixer.init()
+		#mixer.music.load('local/default/sfx.wav')
 		self.reset_mouse_position()
 
 		self.ableButtonsAndMouse()
@@ -173,7 +175,10 @@ class Play3:
 		self.disableButtonsAndMouse()
 		# 1. Checking reinforcement condition
 		if self.clicks[-1] == self.memo_correct_answer:
-			mixer.music.play() 
+
+			#mixer.music.play() 
+			winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
+
 			self.reinforcement.append(True)
 			self.points.set(int(self.points.get())+int(self.settings['points']))
 			self.memo_accuracy += 1
@@ -190,7 +195,8 @@ class Play3:
 	def normal_game(self):
 		self.disableButtonsAndMouse()
 		if datetime.datetime.now() - self.start_time >\
-			datetime.timedelta(minutes=float(self.settings['max_time'])):
+			datetime.timedelta(minutes=float(self.settings['max_time']))\
+			and len(self.blocks) >= int(self.settings['blocks3']):
 			self.timeOut()
 		elif len(self.clicks) == 4:	
 			self.repeat += 1
@@ -201,7 +207,10 @@ class Play3:
 			reinforcement_flag = self.reinforcement[-1] if self.reinforcement else False
 			if utils.Threshold(self.clicks,self.frequency,self.combinations,\
 			reinforcement_flag) <= float(self.settings['threshold']):
-				mixer.music.play() 
+
+				#mixer.music.play() 
+				winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
+
 				self.reinforcement.append(True)
 				self.points.set(int(self.points.get())+int(self.settings['points']))
 				self.master.after(20,self.fadeColor)

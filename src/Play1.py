@@ -11,9 +11,11 @@ from copy import deepcopy
 import datetime
 import numpy as np
 import os
-from pygame import mixer
 import random
 import time
+
+from pygame import mixer
+import winsound
 
 from MyCommons import *
 import utils
@@ -49,8 +51,8 @@ class Play1:
 		self.points_label.place(x=self.sw/2,y=self.sh/2,anchor='center')
 
 		# c. loading sound and reset mouse position
-		mixer.init()
-		mixer.music.load('local/default/sfx.wav')
+		#mixer.init()
+		#mixer.music.load('local/default/sfx.wav')
 		self.reset_mouse_position()
 
 		self.ableButtonsAndMouse()
@@ -113,7 +115,8 @@ class Play1:
 	def check_game_status(self):
 		self.disableButtonsAndMouse()
 		if datetime.datetime.now() - self.start_time >\
-			datetime.timedelta(minutes=float(self.settings['max_time'])):
+			datetime.timedelta(minutes=float(self.settings['max_time']))\
+			and len(self.blocks) >= int(self.settings['blocks1']):
 			self.timeOut()
 		elif len(self.clicks) == 4:	
 			print('| Clicks:',self.clicks)
@@ -123,7 +126,8 @@ class Play1:
 			self.rgb = np.array([255.0,255.0,255.0])
 
 			self.points.set(int(self.points.get())+int(self.settings['points']))
-			mixer.music.play() 
+			#mixer.music.play() 
+			winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
 			self.master.after(20,self.fadeColor)
 		else:
 			self.master.after(int(float(self.settings['iri'])*1000),self.ableButtonsAndMouse)
@@ -162,7 +166,7 @@ class Play1:
 
 		# 3. Checking replay conditions
 		if len(self.blocks) >= int(self.settings['blocks1'])\
-		and utils.Stability(self.blocks) <= float(self.settings['stability']):
+		and utils.Stability(self.blocks,float(self.settings['stability'])):
 			self.rgb = np.array([0.0,200.0,0.0])
 			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
 				 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\

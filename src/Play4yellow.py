@@ -11,9 +11,11 @@ from copy import deepcopy
 import datetime
 import numpy as np
 import os
-from pygame import mixer
 import random
 import time
+
+from pygame import mixer
+import winsound
 
 from MyCommons import *
 import utils
@@ -55,8 +57,8 @@ class Play4yellow:
 		self.points_label.place(x=self.sw/2,y=self.sh/2,anchor='center')
 
 		# c. loading sound and reset mouse position
-		mixer.init()
-		mixer.music.load('local/default/sfx.wav')
+		#mixer.init()
+		#mixer.music.load('local/default/sfx.wav')
 		self.reset_mouse_position()
 
 		self.ableButtonsAndMouse()
@@ -132,7 +134,10 @@ class Play4yellow:
 	def memory_game(self):
 		# 1. Checking reinforcement condition
 		if self.clicks[-1] == self.memo_correct_answer:
-			mixer.music.play() 
+
+			#mixer.music.play() 
+			winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
+
 			self.reinforcement.append(True)
 			self.points.set(int(self.points.get())+int(self.settings['points']))
 			self.memo_accuracy += 1
@@ -148,10 +153,7 @@ class Play4yellow:
 
 	def normal_game(self):
 		self.disableButtonsAndMouse()
-		if datetime.datetime.now() - self.start_time >\
-			datetime.timedelta(minutes=float(self.settings['max_time'])):
-			self.timeOut()
-		elif len(self.clicks) == 4:	
+		if len(self.clicks) == 4:	
 			self.repeat += 1
 
 			self.removeButtons()
@@ -160,7 +162,10 @@ class Play4yellow:
 			reinforcement_flag = self.reinforcement[-1] if self.reinforcement else False
 			if utils.Threshold(self.clicks,self.frequency,self.combinations,\
 			reinforcement_flag) <= float(self.settings['threshold']):
-				mixer.music.play() 
+
+				#mixer.music.play() 
+				winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
+
 				self.reinforcement.append(True)
 				self.points.set(int(self.points.get())+int(self.settings['points']))
 				self.master.after(20,self.fadeColor)
@@ -265,11 +270,6 @@ class Play4yellow:
 		print(self.finish_txt)
 		from Play4 import Play4
 		Play4(self.master,self,self.main_bg)
-
-	def timeOut(self):
-		print(self.timeout_txt)
-		self.disableButtons()
-		myReturnMenuPopUp(self,'Fim do Experimento!\nPor favor, contacte o pesquisador e informe o fim da tarefa.\n Obrigado pela sua participação!')
 
 	def fail(self):
 		myFailPopUp(self,'Fim do Experimento!\nPor favor, contacte o pesquisador e informe o fim da tarefa.\n Obrigado pela sua participação!')
@@ -383,27 +383,50 @@ class Play4yellow:
 			lx, rx = 8*self.sh/10, 2*self.sh/10
 
 		# 2. Building the buttons
-		# a. left button
-		if self.memo_correct_answer == 'E':
-			self.left_button = Button(self.master, anchor = 'center', compound = 'center', 
-										font = Font(family='Helvetica', size=18, weight='bold'),
-										bg = "#%02x%02x%02x" % (30, 30, 30), fg = 'white',
-										command = self.left_button_click,
-										highlightthickness = 0, image=joker_image,
-										bd = 0, padx=0,pady=0,height=80,width=80)
-			self.left_button.image = joker_image
-			self.left_button.place(x=self.sw/2, y=lx, anchor='center')
+		if self.memo_reinforced[0][1]:
+			# a. left button
+			if self.memo_correct_answer == 'E':
+				self.left_button = Button(self.master, anchor = 'center', compound = 'center', 
+											font = Font(family='Helvetica', size=18, weight='bold'),
+											bg = "#%02x%02x%02x" % (30, 30, 30), fg = 'white',
+											command = self.left_button_click,
+											highlightthickness = 0, image=joker_image,
+											bd = 0, padx=0,pady=0,height=80,width=80)
+				self.left_button.image = joker_image
+				self.left_button.place(x=self.sw/2, y=lx, anchor='center')
 
-		# b. right button
-		if self.memo_correct_answer == 'D':
-			self.right_button = Button(self.master, anchor = 'center', compound = 'center', 
-										font = Font(family='Helvetica', size=18, weight='bold'),
-										bg = "#%02x%02x%02x" % (30, 30, 30), fg = 'white',
-										command = self.right_button_click,
-										highlightthickness = 0, image=joker_image,
-										bd = 0, padx=0,pady=0,height=80,width=80)
-			self.right_button.image = joker_image
-			self.right_button.place(x=self.sw/2, y=rx, anchor='center')
+			# b. right button
+			if self.memo_correct_answer == 'D':
+				self.right_button = Button(self.master, anchor = 'center', compound = 'center', 
+											font = Font(family='Helvetica', size=18, weight='bold'),
+											bg = "#%02x%02x%02x" % (30, 30, 30), fg = 'white',
+											command = self.right_button_click,
+											highlightthickness = 0, image=joker_image,
+											bd = 0, padx=0,pady=0,height=80,width=80)
+				self.right_button.image = joker_image
+				self.right_button.place(x=self.sw/2, y=rx, anchor='center')
+		else:
+			# a. left button
+			if self.memo_correct_answer == 'E':
+				self.right_button = Button(self.master, anchor = 'center', compound = 'center', 
+											font = Font(family='Helvetica', size=18, weight='bold'),
+											bg = "#%02x%02x%02x" % (30, 30, 30), fg = 'white',
+											command = self.right_button_click,
+											highlightthickness = 0, image=joker_image,
+											bd = 0, padx=0,pady=0,height=80,width=80)
+				self.right_button.image = joker_image
+				self.right_button.place(x=self.sw/2, y=lx, anchor='center')
+
+			# b. right button
+			if self.memo_correct_answer == 'D':
+				self.left_button = Button(self.master, anchor = 'center', compound = 'center', 
+											font = Font(family='Helvetica', size=18, weight='bold'),
+											bg = "#%02x%02x%02x" % (30, 30, 30), fg = 'white',
+											command = self.left_button_click,
+											highlightthickness = 0, image=joker_image,
+											bd = 0, padx=0,pady=0,height=80,width=80)
+				self.left_button.image = joker_image
+				self.left_button.place(x=self.sw/2, y=rx, anchor='center')
 
 	def left_button_click(self):
 		#print(self.left_click_txt)
@@ -433,26 +456,19 @@ class Play4yellow:
 			if self.memo_reinforced and\
 			self.memo_reinforced[0][0]-1 == len(self.clicks)\
 			and self.saved_order[0] == 2:
-				if self.memo_reinforced[0][1]:
-					self.createJokerButton()
-				else:
-					self.createImgButtons()
+				self.createJokerButton()
 			else:
 				self.createButtons()
+
 		elif self.experiment == 2:
 			if self.saved_order[0] == 2:
-				if self.memo_reinforced[0][1]:
-					self.createJokerButton()
-				else:
-					self.createImgButtons()
+				self.createJokerButton()
 			else:
 				self.createButtons()
+
 		elif self.experiment == 3:
 			if self.saved_order[0] == 2:
-				if self.memo_reinforced[0][1]:
-					self.createJokerButton()
-				else:
-					self.createImgButtons()
+				self.createJokerButton()
 			else:
 				self.createButtons()
 		else:

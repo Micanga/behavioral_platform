@@ -11,9 +11,11 @@ from copy import deepcopy
 import datetime
 import numpy as np
 import os
-from pygame import mixer
 import random
 import time
+
+from pygame import mixer
+import winsound
 
 from MyCommons import *
 import utils
@@ -48,8 +50,8 @@ class Play2:
 		self.points_label.place(x=self.sw/2,y=self.sh/2,anchor='center')
 
 		# c. loading sound and reset mouse position
-		mixer.init()
-		mixer.music.load('local/default/sfx.wav')
+		#mixer.init()
+		#mixer.music.load('local/default/sfx.wav')
 		self.reset_mouse_position()
 
 		self.ableButtonsAndMouse()
@@ -112,7 +114,8 @@ class Play2:
 	def check_game_status(self):
 		self.disableButtonsAndMouse()
 		if datetime.datetime.now() - self.start_time >\
-			datetime.timedelta(minutes=float(self.settings['max_time'])):
+			datetime.timedelta(minutes=float(self.settings['max_time']))\
+			and len(self.blocks) >= int(self.settings['blocks2']):
 			self.timeOut()
 		elif len(self.clicks) == 4:	
 			print('| Clicks:',self.clicks)
@@ -124,7 +127,10 @@ class Play2:
 			reinforcement_flag = self.reinforcement[-1] if self.reinforcement else False
 			if utils.Threshold(self.clicks,self.frequency,self.combinations,\
 			reinforcement_flag) <= float(self.settings['threshold']):
-				mixer.music.play() 
+
+				#mixer.music.play() 
+				winsound.PlaySound('local/default/sfx.wav', winsound.SND_ASYNC)
+
 				self.points.set(int(self.points.get())+int(self.settings['points']))
 				self.reinforcement.append(True)
 				self.master.after(20,self.fadeColor)
@@ -183,22 +189,23 @@ class Play2:
 		self.total_frequency[self.clicks] += 1
 
 		# 3. Checking replay conditions
-		if len(self.blocks) >= int(self.settings['blocks2']) and self.reinforcement[-1]\
-		and utils.Stability(self.blocks) <= float(self.settings['stability'])\
-		and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])) < float(self.settings['preinf']):
-			self.rgb = np.array([0.0,200.0,0.0])
-			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
-				 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
-				 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
-			self.master.after(20,self.fadeResetText)
-		elif len(self.blocks) >= int(self.settings['blocks2']) and not self.reinforcement[-1]\
-		and utils.Stability(self.blocks) < float(self.settings['stability'])\
-		and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])) < float(self.settings['preinf']):
-			self.rgb = np.array([0.0,0.0,0.0])
-			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 0, 0), fg = "#%02x%02x%02x" % (0, 0, 0),\
-				 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
-				 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
-			self.master.after(20,self.fadeResetText)
+		if self.repeat == 16:
+			if len(self.blocks) >= int(self.settings['blocks2']) and self.reinforcement[-1]\
+			and utils.Stability(self.blocks,float(self.settings['stability']))\
+			and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
+				self.rgb = np.array([0.0,200.0,0.0])
+				self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
+					 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
+					 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
+				self.master.after(20,self.fadeResetText)
+			elif len(self.blocks) >= int(self.settings['blocks2']) and not self.reinforcement[-1]\
+			and utils.Stability(self.blocks,float(self.settings['stability']))\
+			and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
+				self.rgb = np.array([0.0,0.0,0.0])
+				self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 0, 0), fg = "#%02x%02x%02x" % (0, 0, 0),\
+					 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
+					 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
+				self.master.after(20,self.fadeResetText)
 		else:
 			self.clicks = ''
 			self.round_start_time = datetime.datetime.now()

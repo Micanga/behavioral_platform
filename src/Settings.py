@@ -84,7 +84,7 @@ class Settings:
 
 		# e. preinf entry
 		self.preinf_label, self.preinf_entry = \
-		 self.create_label_entry('Proporção de Reforço Miníma (%):','preinf',\
+		 self.create_label_entry('Estabilidade na Taxa de Reforço (%):','preinf',\
 		 	sw/9, 4.25*sh/10 + 80)
 
 		# f. threshold entry
@@ -117,7 +117,7 @@ class Settings:
 
 		# i. Points
 		self.min_memo_label, self.min_memo_entry = \
-		 self.create_label_entry('Acurácia MTS (blocos consec.):','min_memo',\
+		 self.create_label_entry('Acurácia MTS (acertos consec.):','min_memo',\
 		 	sw/9 +700, 1.75*sh/10)
 
 		# 6. Setting Buttons
