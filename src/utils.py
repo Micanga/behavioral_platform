@@ -369,12 +369,12 @@ def load_text(stage):
 	saved_texts = [name for name in os.listdir('local/texts/stage'+str(stage)+'/')]
 	saved_texts.sort()
 	if len(saved_texts) > 0:
-		with open('local/texts/stage'+str(stage)+'/'+saved_texts[-1]) as prev_file:
+		with open('local/texts/stage'+str(stage)+'/'+saved_texts[-1],encoding="utf-8") as prev_file:
 			for line in prev_file:
 				text += line[:-1]
 		print("| -- custom text loaded.        |")
 	else:
-		with open('local/default/stage'+str(stage)+'.txt') as default_text:
+		with open('local/default/stage'+str(stage)+'.txt',encoding="utf-8") as default_text:
 			for line in default_text:
 				text += line[:-1]
 		print("| -- default text loaded.       |")

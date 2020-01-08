@@ -105,7 +105,7 @@ class Play4:
 
 	def finish(self):
 		myReturnMenuPopUp(self,'Fim do Experimento! Você acumulou' +\
-			str(self.points.set(int(self.points.get())+int(self.global_points.get()))) +\
+			str(int(self.points.get())+int(self.global_points.get())) +\
 			'pontos!\nPor favor, contacte o pesquisador e informe o fim da tarefa.\n Obrigado pela sua participação!')
 
 
