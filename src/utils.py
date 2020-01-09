@@ -428,13 +428,10 @@ def Stability(vector,threshold):
 	time = [vector[i][1] for i in [-3,-2,-1]]
 	check = [(fabs(time[i] - time[i-1])/time[i]) <= threshold for i in [0,1,2]]
 
-	if check[0] and check[1] and check[2]:
-		return True
-	else:
-		return False
+	return(check[0] and check[1] and check[2])
 
-def ReinfStability(vector,block_len,threshold):
-	if len(vector) < 3*int(block_len):
+def ReinfStability(vector, block_len, threshold):
+	if len(vector) < (3*int(block_len)):
 		return float(threshold)
 
 	reinf = []
@@ -442,9 +439,7 @@ def ReinfStability(vector,block_len,threshold):
 		reinf.append(sum([vector[j] \
 			for j in range(-(3-i)*int(block_len),-(2-i)*int(block_len))]))
 
-	check = [(fabs(reinf[i] - reinf[i-1])/reinf[i]) <= threshold for i in range(1,3)]
+	value = [(fabs(reinf[i] - reinf[i-1])/reinf[i]) for i in [0,1,2]]
+	check = [(fabs(reinf[i] - reinf[i-1])/reinf[i]) <= threshold for i in [0,1,2]]
 
-	if check[0] and check[1] and check[2]:
-		return True
-	else:
-		return False
+	return(check[0] and check[1] and check[2])

@@ -189,23 +189,23 @@ class Play2:
 		self.total_frequency[self.clicks] += 1
 
 		# 3. Checking replay conditions
-		if self.repeat == 16:
-			if len(self.blocks) >= int(self.settings['blocks2']) and self.reinforcement[-1]\
-			and utils.Stability(self.blocks,float(self.settings['stability']))\
-			and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
-				self.rgb = np.array([0.0,200.0,0.0])
-				self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
-					 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
-					 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
-				self.master.after(20,self.fadeResetText)
-			elif len(self.blocks) >= int(self.settings['blocks2']) and not self.reinforcement[-1]\
-			and utils.Stability(self.blocks,float(self.settings['stability']))\
-			and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
-				self.rgb = np.array([0.0,0.0,0.0])
-				self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 0, 0), fg = "#%02x%02x%02x" % (0, 0, 0),\
-					 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
-					 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
-				self.master.after(20,self.fadeResetText)
+		if len(self.blocks) >= int(self.settings['blocks2']) and self.reinforcement[-1]\
+		 and utils.Stability(self.blocks,float(self.settings['stability']))\
+		 and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
+			self.rgb = np.array([0.0,200.0,0.0])
+			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
+				 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
+				 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
+			self.master.after(20,self.fadeResetText)
+
+		elif len(self.blocks) >= int(self.settings['blocks2']) and not self.reinforcement[-1]\
+		 and utils.Stability(self.blocks,float(self.settings['stability']))\
+		 and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
+			self.rgb = np.array([0.0,0.0,0.0])
+			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 0, 0), fg = "#%02x%02x%02x" % (0, 0, 0),\
+				 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
+				 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
+			self.master.after(20,self.fadeResetText)
 		else:
 			self.clicks = ''
 			self.round_start_time = datetime.datetime.now()
