@@ -6,4 +6,5 @@ local/left/*
 local/right/*
 local/settings/*
 local/texts/*
+src/*.pyc
 src/__pycache__/*
