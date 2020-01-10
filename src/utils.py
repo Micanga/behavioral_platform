@@ -396,11 +396,27 @@ def reset_play3(master, prev_sc, main_bg):
 def shuffleStages():
 	stages = []
 	possibilities = [[2,3,4],[3,2,4],[3,4,2]]
+	shuffle_idx = [0,1,2]
+
 	for i in range(0,10):
-		idx = random.randint(0,2)
+		# reseting idx list
+		if len(shuffle_idx) == 0:
+			shuffle_idx = [0,1,2]
+
+		# sampling an idx
+		if len(shuffle_idx) == 1:
+			idx = shuffle_idx[0]
+		else:
+			idx = random.sample(shuffle_idx,1)[0]
+
+		# saving the stage order
 		stages.append(possibilities[idx][0])
 		stages.append(possibilities[idx][1])
 		stages.append(possibilities[idx][2])
+
+		# removing from the list
+		shuffle_idx.remove(idx)
+
 	return stages
 
 # MATH

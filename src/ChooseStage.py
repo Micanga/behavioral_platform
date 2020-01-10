@@ -130,8 +130,8 @@ class ChooseStage:
 
 		self.destroyWidgets()
 
-		from Play2 import Play2
-		Play2(self.master,self,self.main_bg)
+		from IntroStage2 import IntroStage2
+		IntroStage2(self.master,self,self.main_bg)
 
 	def exp3_click(self):
 		# a. verifying nickname

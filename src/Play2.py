@@ -177,6 +177,7 @@ class Play2:
 			self.blocks.append([deepcopy(self.results),\
 			(datetime.datetime.now() - self.block_start_time).total_seconds() ,1])
 			utils.write_result('2',self,False)
+			print('endblock',len(self.blocks))
 
 			self.results = []
 			self.result_set = set()
@@ -189,7 +190,7 @@ class Play2:
 		self.total_frequency[self.clicks] += 1
 
 		# 3. Checking replay conditions
-		if len(self.blocks) >= int(self.settings['blocks2']) and self.reinforcement[-1]\
+		if self.repeat == 0 and len(self.blocks) >= int(self.settings['blocks2']) and self.reinforcement[-1]\
 		 and utils.Stability(self.blocks,float(self.settings['stability']))\
 		 and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
 			self.rgb = np.array([0.0,200.0,0.0])
@@ -198,7 +199,7 @@ class Play2:
 				 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
 			self.master.after(20,self.fadeResetText)
 
-		elif len(self.blocks) >= int(self.settings['blocks2']) and not self.reinforcement[-1]\
+		elif self.repeat == 0 and len(self.blocks) >= int(self.settings['blocks2']) and not self.reinforcement[-1]\
 		 and utils.Stability(self.blocks,float(self.settings['stability']))\
 		 and utils.ReinfStability(self.reinforcement,16,float(self.settings['preinf'])):
 			self.rgb = np.array([0.0,0.0,0.0])

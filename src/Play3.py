@@ -290,14 +290,14 @@ class Play3:
 			self.order.pop(0)
 
 		# 3. Checking replay conditions
-		if len(self.blocks) >= int(self.settings['blocks3']) and self.reinforcement[-1]\
+		if self.repeat == 0 and len(self.blocks) >= int(self.settings['blocks3']) and self.reinforcement[-1]\
 		and self.memo_accuracy >= int(self.settings['min_memo']):
 			self.rgb = np.array([0.0,200.0,0.0])
 			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
 				 text='ATÉ O MOMENTO VOCÊ ACUMULOU '+str(int(self.points.get())+int(self.prev_sc.points.get()))+\
 				 ' PONTOS!', font=Font(family='Helvetica', size=16, weight='bold'))
 			self.master.after(20,self.fadeResetText)
-		elif len(self.blocks) >= int(self.settings['blocks3']) and not self.reinforcement[-1]\
+		elif self.repeat == 0 and len(self.blocks) >= int(self.settings['blocks3']) and not self.reinforcement[-1]\
 		and self.memo_accuracy >= int(self.settings['min_memo']):
 			self.rgb = np.array([0.0,0.0,0.0])
 			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 0, 0), fg = "#%02x%02x%02x" % (0, 0, 0),\
