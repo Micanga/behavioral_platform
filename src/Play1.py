@@ -165,7 +165,7 @@ class Play1:
 		self.total_frequency[self.clicks] += 1
 
 		# 3. Checking replay conditions
-		if len(self.blocks) >= int(self.settings['blocks1'])\
+		if self.repeat == 0 and len(self.blocks) >= int(self.settings['blocks1'])\
 		and utils.Stability(self.blocks,float(self.settings['stability'])):
 			self.rgb = np.array([0.0,200.0,0.0])
 			self.win_txt = tkinter.Label(self.master, bg= "#%02x%02x%02x" % (0, 200, 0), fg = "#%02x%02x%02x" % (0, 200, 0),\
