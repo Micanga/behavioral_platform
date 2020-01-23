@@ -4,6 +4,7 @@ from tkinter import font
 from tkinter import LEFT, RIGHT, BOTTOM, TOP, NONE
 from tkinter import messagebox, filedialog, StringVar
 from tkinter.font import Font
+import tkinter.scrolledtext as scrolledtext
 
 import datetime
 import os
@@ -75,17 +76,17 @@ class myTextBox:
 		saved_texts.sort()
 		print("Saved texts:",saved_texts)
 		if len(saved_texts) > 0:
-			with open('local/texts/stage'+str(stage)+'/'+saved_texts[-1]) as prev_file:
+			with open('local/texts/stage'+str(stage)+'/'+saved_texts[-1],encoding='latin-1') as prev_file:
 				for line in prev_file:
 					text += line[:-1]
 		else:
-			with open('local/default/stage'+str(stage)+'.txt') as default_text:
+			with open('local/default/stage'+str(stage)+'.txt',encoding='latin-1') as default_text:
 				for line in default_text:
 					text += line[:-1]
 
 		print('Previous text:',text)
 
-		self.pop_text = tkinter.Text(self.cur_popup, fg = 'black', font = Font(family='Helvetica', size=14),\
+		self.pop_text = scrolledtext.ScrolledText(self.cur_popup, fg = 'black', font = Font(family='Helvetica', size=14),\
 									 bg = "#%02x%02x%02x" % (255, 255, 255), insertbackground = 'black',\
 									 highlightcolor = "#%02x%02x%02x" % (180,180,180), highlightbackground= "#%02x%02x%02x" % (50,50,50),\
 									  bd=0, width =35, height=10, wrap='word')

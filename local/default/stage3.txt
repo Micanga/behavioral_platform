@@ -1,1 +1,2 @@
-Texto Fase 3.
+Nesta nova etapa, além da tarefa que você fez até aqui, em alguns momentos uma nova tarefa será apresentada. Nesta nova tarefa, duas descrições do que você fez serão apresentados na tela e você deverá clicar sobre aquela que julgar correta. A letra "E" corresponderá à palavra à "esquerda" e a letra "D" corresponderá a palavra à "direita"
+
