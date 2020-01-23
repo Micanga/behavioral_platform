@@ -24,10 +24,10 @@ Este repositório se refere a um projeto colaborativo com o professor Emerson Fe
 No geral, a plataforma apresenta um jogo que permite a coleta de informações comportamentais.
 A plataforma implementa:
 * O modo de reprodução com:
-** 3 experiências distintas.
-** Cada experimento com 4 etapas.
+  * 3 experiências distintas.
+  * Cada experimento com 4 etapas.
 * Configuração completa:
-** Você pode alterar todo o comportamento padrão e de jogo nesta tela.
-** Você pode ajustar os textos e o reforço do jogador para se adequar ao objetivo do seu experimento.
+  * Você pode alterar todo o comportamento padrão e de jogo nesta tela.
+  * Você pode ajustar os textos e o reforço do jogador para se adequar ao objetivo do seu experimento.
 * Registro do jogo:
-** A plataforma oferece um registro completo do jogo para análises adicionais no formato CSV.
+  * A plataforma oferece um registro completo do jogo para análises adicionais no formato CSV.
