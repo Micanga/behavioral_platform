@@ -8,13 +8,13 @@ This repository refers to a collaborative project with professor Emerson Ferreir
 Overall, the platform presents a game, which allows behavioural information collection.
 The platform implements:
 * The play mode with:
-** 3 distinct experiments.
-** Each experiment with 4 stages.
+ * 3 distinct experiments.
+ * Each experiment with 4 stages.
 * Complete setting:
-** You can change all the standard and game behaviour within this screen.
-** You can adjust texts and player's reinforcement to suit your experiment aim. 
+ * You can change all the standard and game behaviour within this screen.
+ * You can adjust texts and player's reinforcement to suit your experiment aim. 
 * Game log:
-** The platform offers a complete game log for further analysis in the CSV format.
+ * The platform offers a complete game log for further analysis in the CSV format.
 
 PS: The platform is entirely in Portuguese due to the application purposes (in Brazil).
 
