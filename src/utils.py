@@ -57,7 +57,6 @@ def write_result(index,game,fill=True,memory=False):
 	if memory:
 		threshold = ''
 		u_value = ''
-		game.clicks = game.clicks[0:-1]
 	else:
 		threshold = str(Threshold(game.clicks,game.frequency,game.combinations,True))
 
